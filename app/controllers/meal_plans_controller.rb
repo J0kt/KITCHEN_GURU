@@ -18,8 +18,10 @@ class MealPlansController < ApplicationController
     @user_preference = UserPreference.new(permitted_params)
 
     if @user_preference.valid?
-      # Appel du service API
-      generated_data = MenuGeneratorService.new(@user_preference).generate_menu
+      # Appel du service API (Mode TEST : On force le plan de secours si quota épuisé)
+
+      # generated_data = MenuGeneratorService.new(@user_preference).generate_menu # Ligne d'appel API réelle
+      generated_data = nil # On simule l'échec de l'API (quota épuisé)
 
       # Si l'API retourne un hash valide et rempli
       if generated_data.present? && generated_data['menus'].present?
@@ -27,7 +29,7 @@ class MealPlansController < ApplicationController
         @meal_plan = transform_gemini_output(generated_data, @user_preference)
         flash.now[:notice] = "Votre plan de repas hebdomadaire a été généré avec succès par l'IA !"
       else
-        # ÉCHEC API : Utilisation du plan de secours (pour ne pas avoir une page blanche)
+        # ÉCHEC API : Utilisation du plan de secours
         @meal_plan = generate_fallback_plan(@user_preference)
         Rails.logger.warn "ÉCHEC DE L'API GEMINI : Activation du plan de secours."
         flash.now[:alert] = "La génération IA a échoué. Voici un plan de secours pour confirmer la fonctionnalité."
@@ -97,6 +99,7 @@ class MealPlansController < ApplicationController
       end
     end
 
+    # Le hash de retour utilise les Symboles pour les clés principales.
     {
       :user_kcal_target => kcal_target,
       :generated_kcal => (kcal_target * 0.95).round(0),
