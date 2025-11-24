@@ -8,7 +8,7 @@ class MealPlansController < ApplicationController
     # 1. Nettoyer et autoriser les paramètres
     permitted_params = preference_params
 
-    # Correction pour le CHATBOT : Conversion de la chaîne d'allergies du chatbot en tableau
+    # Conversion de la chaîne d'allergies du chatbot en tableau
     if permitted_params[:allergies].present? && permitted_params[:allergies].is_a?(String)
         permitted_params[:allergies] = permitted_params[:allergies].split(',').reject(&:empty?)
     else
@@ -20,8 +20,11 @@ class MealPlansController < ApplicationController
     if @user_preference.valid?
       # Appel du service API (Mode TEST : On force le plan de secours si quota épuisé)
 
-      # generated_data = MenuGeneratorService.new(@user_preference).generate_menu # Ligne d'appel API réelle
-      generated_data = nil # On simule l'échec de l'API (quota épuisé)
+      # Ligne pour l'appel API réel (commentée pour le mode test) :
+      # generated_data = MenuGeneratorService.new(@user_preference).generate_menu
+
+      # LIGNE DE TEST ACTIVÉE : On simule l'échec de l'API (quota épuisé)
+      generated_data = nil
 
       # Si l'API retourne un hash valide et rempli
       if generated_data.present? && generated_data['menus'].present?
@@ -86,6 +89,7 @@ class MealPlansController < ApplicationController
     meals = ['Petit-déjeuner', 'Déjeuner', 'Dîner']
 
     # Ce plan génère un hash avec des clés STRING ("name") pour correspondre au format JSON
+    # et être lu correctement par recipe['name'] dans la vue.
     days.each do |day|
       menus[day] = {}
       meals.each do |meal|

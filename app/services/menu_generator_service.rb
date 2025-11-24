@@ -3,9 +3,11 @@ require 'net/http'
 require 'uri'
 require 'openssl'
 
+# Service pour interagir avec l'API Gemini et générer le plan de repas.
 class MenuGeneratorService
-  GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent"
+  GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent"
 
+  # Utilisation de la clé depuis les variables d'environnement
   API_KEY = ENV['GEMINI_API_KEY']
   MAX_RETRIES = 5
 
@@ -13,6 +15,7 @@ class MenuGeneratorService
     @prefs = user_preference
   end
 
+  # Génère l'invite système (persona et règles) pour l'IA (Basé sur ZOE Health)
   def system_prompt
     <<~PROMPT
       Vous êtes un Chef et Nutritionniste IA expert, spécialisé dans les recommandations basées sur la science de la santé intestinale (Microbiote) et anti-inflammatoire, en phase avec les principes de ZOE Health.
@@ -28,6 +31,7 @@ class MenuGeneratorService
     PROMPT
   end
 
+  # Méthode principale pour générer le plan de menu
   def generate_menu
     unless API_KEY.present?
       Rails.logger.error "Erreur: La clé API Gemini est manquante ou invalide dans les variables d'environnement."
@@ -42,8 +46,10 @@ class MenuGeneratorService
     if response && response['candidates'] && response['candidates'][0]
       json_text = response['candidates'][0]['content']['parts'][0]['text']
 
+      # Tente de nettoyer les délimiteurs Markdown si l'IA les ajoute
       json_text = json_text.gsub(/```json\n?|```\n?/, '').strip
 
+      # Log du JSON parsé pour le débogage final (si nécessaire)
       Rails.logger.info "JSON Parsé de l'API: #{json_text.truncate(100)}"
 
       return JSON.parse(json_text)
@@ -52,6 +58,7 @@ class MenuGeneratorService
       nil
     end
   rescue JSON::ParserError => e
+    # Log l'erreur de parsing pour aider au débogage
     Rails.logger.error "ERREUR CRITIQUE DE PARSING JSON : #{e.message}. Texte brut reçu : #{json_text.truncate(500)}"
     nil
   rescue StandardError => e
@@ -61,6 +68,7 @@ class MenuGeneratorService
 
   private
 
+  # Crée le prompt utilisateur en français
   def create_user_prompt
     allergies_list = @prefs.allergies.any? ? "Exclure absolument ces ingrédients: #{@prefs.allergies.join(', ')}." : ""
     kcal_target = @prefs.calculate_recommended_kcal
@@ -74,6 +82,7 @@ class MenuGeneratorService
     PROMPT
   end
 
+  # Définit le schéma JSON attendu pour garantir la structure de la réponse.
   def create_response_schema
     {
       type: "OBJECT",
@@ -104,6 +113,7 @@ class MenuGeneratorService
     }
   end
 
+  # Schéma pour une recette individuelle
   def recipe_schema
     {
       type: "OBJECT",
@@ -122,33 +132,28 @@ class MenuGeneratorService
     }
   end
 
+  # Gère l'appel HTTP POST à l'API Gemini avec backoff exponentiel
   def call_gemini_api(prompt, schema)
-    base_url = "https://generativelanguage.googleapis.com"
-    path = "/v1beta/models/gemini-2.0-flash-exp:generateContent"
-
-    uri = URI.parse(base_url)
+    uri = URI.parse("#{GEMINI_API_URL}?key=#{API_KEY}")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
+
+    # Désactivation de la vérification SSL
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     payload = {
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
+      config: {
+        system_instruction: system_prompt,
         response_mime_type: "application/json",
         response_schema: schema
-      },
-      systemInstruction: {
-        parts: [{ text: system_prompt }]
       }
     }
 
-    headers = {
-      'Content-Type' => 'application/json',
-      'x-goog-api-key' => API_KEY
-    }
+    headers = { 'Content-Type' => 'application/json' }
 
     (1..MAX_RETRIES).each do |attempt|
-      request = Net::HTTP::Post.new(path, headers)
+      request = Net::HTTP::Post.new(uri.request_uri, headers)
       request.body = payload.to_json
 
       begin
@@ -161,6 +166,7 @@ class MenuGeneratorService
           Rails.logger.warn "Rate limit atteint (429). Tentative de nouvelle requête dans #{sleep_time} secondes..."
           sleep(sleep_time)
         else
+          # Capture l'erreur HTTP 400/500/etc.
           Rails.logger.error "Erreur HTTP #{response.code}: #{response.body}"
           return nil
         end
