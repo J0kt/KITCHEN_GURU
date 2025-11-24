@@ -1,0 +1,65 @@
+name: User Story
+description: Créer une nouvelle user story pour le projet
+title: "As a user I can [ACTION]"
+labels: ["user-story"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## User Story Template
+        Utilisez ce template pour créer une nouvelle user story selon le format standard.
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Décrivez la fonctionnalité du point de vue de l'utilisateur
+      placeholder: "As a [type of user], I can [action] so that [benefit]"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Critères d'acceptation
+      description: Listez les critères qui doivent être satisfaits pour que cette story soit considérée comme terminée
+      placeholder: |
+        - [ ] Critère 1
+        - [ ] Critère 2
+        - [ ] Critère 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-notes
+    attributes:
+      label: Notes techniques
+      description: Ajoutez des détails techniques, des dépendances ou des suggestions d'implémentation
+      placeholder: "Détails techniques, fichiers à modifier, gems/packages nécessaires, etc."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité
+      description: Quelle est la priorité de cette user story ?
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexité estimée
+      description: Quelle est la complexité estimée de cette story ?
+      options:
+        - Small (1-2 jours)
+        - Medium (3-5 jours)
+        - Large (5+ jours)
+    validations:
+      required: true

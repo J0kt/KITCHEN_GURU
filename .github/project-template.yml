@@ -1,0 +1,60 @@
+name: "Kitchen Guru - Kanban Template"
+description: "Template de projet Kanban pour gérer le développement d'applications web avec méthodologie Agile"
+
+columns:
+  - name: "📋 Backlog"
+    description: "This item hasn't been started"
+    automation: none
+
+  - name: "🎯 Ready"
+    description: "This is ready to be picked up"
+    automation: none
+
+  - name: "🚀 In progress"
+    description: "This is actively being worked on"
+    automation: none
+
+  - name: "👀 In review"
+    description: "This item is in review"
+    automation: none
+
+  - name: "✅ Done"
+    description: "This has been completed"
+    automation: none
+
+labels:
+  - name: "user-story"
+    color: "0E8A16"
+    description: "User story"
+
+  - name: "feature"
+    color: "1D76DB"
+    description: "New feature"
+
+  - name: "bug"
+    color: "D93F0B"
+    description: "Something isn't working"
+
+  - name: "bonus"
+    color: "FBCA04"
+    description: "Bonus feature"
+
+  - name: "enhancement"
+    color: "A2EEEF"
+    description: "Improvement to existing feature"
+
+  - name: "documentation"
+    color: "0075CA"
+    description: "Documentation improvements"
+
+  - name: "priority-high"
+    color: "B60205"
+    description: "High priority"
+
+  - name: "priority-medium"
+    color: "FFA500"
+    description: "Medium priority"
+
+  - name: "priority-low"
+    color: "0E8A16"
+    description: "Low priority"

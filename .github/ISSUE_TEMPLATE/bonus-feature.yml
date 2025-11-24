@@ -1,0 +1,80 @@
+name: Bonus Feature
+description: Proposer une fonctionnalité bonus ou amélioration
+title: "(Bonus) "
+labels: ["bonus", "enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bonus Feature
+        Proposez une fonctionnalité bonus ou une amélioration qui va au-delà des exigences de base.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Description de la fonctionnalité
+      description: Décrivez la fonctionnalité bonus proposée
+      placeholder: "As a user, I can [action] so that [benefit]"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation / Valeur ajoutée
+      description: Pourquoi cette fonctionnalité serait-elle utile ?
+      placeholder: "Cette fonctionnalité permettrait de..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Solution proposée
+      description: Comment pourrait-on implémenter cette fonctionnalité ?
+      placeholder: "On pourrait implémenter cela en..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considérées
+      description: Y a-t-il d'autres façons d'atteindre le même objectif ?
+      placeholder: "Alternatives possibles..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups / Exemples
+      description: Ajoutez des mockups, wireframes ou exemples si disponibles
+      placeholder: "Collez vos images ou liens ici..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact utilisateur
+      description: Quel serait l'impact de cette fonctionnalité ?
+      options:
+        - Low - Nice to have
+        - Medium - Améliore l'expérience
+        - High - Change significativement l'utilisation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Effort estimé
+      description: Combien d'effort serait nécessaire ?
+      options:
+        - Small - Quelques heures
+        - Medium - 1-3 jours
+        - Large - Plus d'une semaine
+    validations:
+      required: false

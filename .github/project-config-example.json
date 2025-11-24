@@ -1,0 +1,131 @@
+{
+  "name": "Kitchen Guru - Development Board",
+  "description": "Kanban board pour gérer le développement de Kitchen Guru",
+  "columns": [
+    {
+      "name": "📋 Backlog",
+      "purpose": "This item hasn't been started",
+      "preset": "TODO"
+    },
+    {
+      "name": "🎯 Ready",
+      "purpose": "This is ready to be picked up",
+      "preset": "TODO"
+    },
+    {
+      "name": "🚀 In progress",
+      "purpose": "This is actively being worked on",
+      "preset": "IN_PROGRESS"
+    },
+    {
+      "name": "👀 In review",
+      "purpose": "This item is in review",
+      "preset": "IN_PROGRESS"
+    },
+    {
+      "name": "✅ Done",
+      "purpose": "This has been completed",
+      "preset": "DONE"
+    }
+  ],
+  "example_user_stories": [
+    {
+      "title": "KITCHEN_GURU #1: As a user I can visit the home page",
+      "labels": ["user-story", "feature", "priority-high"],
+      "column": "In progress",
+      "acceptance_criteria": [
+        "Page d'accueil accessible depuis l'URL racine",
+        "Design responsive et attrayant",
+        "Navigation claire vers les autres sections"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #2: As a user I can see the list of my saved recipes",
+      "labels": ["user-story", "feature", "priority-high"],
+      "column": "Backlog",
+      "acceptance_criteria": [
+        "Liste affichée après connexion",
+        "Chaque recette montre titre, image et date",
+        "Pagination si plus de 20 recettes"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #3: As a user I can display the recipe page from the list",
+      "labels": ["user-story", "feature", "priority-high"],
+      "column": "Backlog",
+      "acceptance_criteria": [
+        "Clic sur une recette ouvre sa page détaillée",
+        "Affiche ingrédients et instructions",
+        "Bouton retour vers la liste"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #4: As a user I can edit and delete my saved recipes",
+      "labels": ["user-story", "feature", "priority-medium"],
+      "column": "Backlog",
+      "acceptance_criteria": [
+        "Boutons éditer et supprimer sur chaque recette",
+        "Confirmation avant suppression",
+        "Formulaire d'édition pré-rempli"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #5: As a user I can chat with the AI and give me my list of available ingredients",
+      "labels": ["user-story", "feature", "priority-high"],
+      "column": "In progress",
+      "acceptance_criteria": [
+        "Interface de chat accessible",
+        "AI répond avec suggestions de recettes",
+        "Prise en compte de la liste d'ingrédients"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #6: As a user I can add the AI-generated recipe to my list",
+      "labels": ["user-story", "feature", "priority-medium"],
+      "column": "Backlog",
+      "acceptance_criteria": [
+        "Bouton 'Sauvegarder' sur recettes AI",
+        "Ajout à la liste personnelle",
+        "Confirmation visuelle"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #7: As a user I can enter my profile details (gender, age, allergies, etc.)",
+      "labels": ["user-story", "feature", "priority-medium"],
+      "column": "In progress",
+      "acceptance_criteria": [
+        "Formulaire de profil accessible",
+        "Champs : genre, âge, allergies, préférences",
+        "Sauvegarde et validation des données"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #8: (Bonus) As a user I can ask the AI for variations on a saved recipe",
+      "labels": ["user-story", "bonus", "enhancement", "priority-low"],
+      "column": "Backlog",
+      "acceptance_criteria": [
+        "Option 'Demander une variation' sur recettes",
+        "AI génère variations basées sur la recette",
+        "Possibilité de spécifier le type de variation"
+      ]
+    },
+    {
+      "title": "KITCHEN_GURU #9: (Bonus) Nutritional indicator / cost estimate / time filters",
+      "labels": ["user-story", "bonus", "enhancement", "priority-low"],
+      "column": "In progress",
+      "acceptance_criteria": [
+        "Affichage infos nutritionnelles",
+        "Estimation du coût",
+        "Filtres par temps de préparation",
+        "Filtres par valeurs nutritionnelles"
+      ]
+    }
+  ],
+  "automation_suggestions": {
+    "auto_add_to_project": "Ajouter automatiquement les nouvelles issues au projet",
+    "auto_close_on_merge": "Fermer automatiquement les issues lors du merge de PR",
+    "auto_move_in_progress": "Déplacer en 'In progress' quand une branche est créée",
+    "auto_move_review": "Déplacer en 'In review' quand une PR est créée",
+    "auto_move_done": "Déplacer en 'Done' quand une PR est mergée"
+  }
+}

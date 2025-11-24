@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/J0kt/KITCHEN_GURU/blob/main/README.md
+    about: Consultez la documentation du projet
+
+  - name: 💬 Discussions
+    url: https://github.com/J0kt/KITCHEN_GURU/discussions
+    about: Posez des questions et discutez avec la communauté
