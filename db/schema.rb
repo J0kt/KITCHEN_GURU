@@ -10,8 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_24_110540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "user_preferences", force: :cascade do |t|
+    t.integer "age"
+    t.string "gender"
+    t.string "activity_level"
+    t.decimal "weekly_budget_max"
+    t.integer "max_prep_time_minutes"
+    t.text "allergies"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
