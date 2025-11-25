@@ -10,3 +10,17 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+.recipe-card {
+  padding: 16px;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background: white;
+}
+
+.recipes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
