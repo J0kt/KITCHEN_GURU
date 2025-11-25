@@ -1,5 +1,6 @@
 class Recipe < ApplicationRecord
-  # Associations
-  # A Recipe belongs to one User (1:N)
   belongs_to :user
+  has_many :meal_plan_recipes, dependent: :destroy
+  has_many :meal_plans, through: :meal_plan_recipes
 end
+
