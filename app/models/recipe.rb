@@ -1,4 +1,5 @@
 class Recipe < ApplicationRecord
+
   # Associations
   belongs_to :user
   has_many :recipe_ingredients, dependent: :destroy
@@ -38,3 +39,4 @@ class Recipe < ApplicationRecord
     }
   end
 end
+

@@ -1,4 +1,5 @@
 class MealPlan < ApplicationRecord
+
   # Associations
   belongs_to :user
   has_many :meal_plan_entries, dependent: :destroy
