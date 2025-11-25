@@ -23,7 +23,7 @@ class MenuGeneratorService
       Votre mission est de concevoir un plan de menu hebdomadaire de 7 jours (Petit-déjeuner, Déjeuner, Dîner).
 
       CONSIGNES ZOE HEALTH FONDAMENTALES :
-      1. DIVERSITÉ : Atteindre au moins 30 types de plantes différentes sur la semaine (fruits, légumes, céréales complètes, légumineuses, noix, graines, épices).
+      1. DIVERSITÉ : Atteindre au moins 30 types de plantes différentes sur la semaine (fruits, légumes, céréales complètes, légumineuses, noix, graines, épices, herbes).
       2. QUALITÉ DES GRAISSES : Utiliser de l'huile d'olive extra-vierge, des avocats, et des noix/graines.
       3. ALIMENTS À ÉVITER : Limiter les aliments ultra-transformés et les sucres ajoutés.
 

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'recipes/index'
+  get 'recipes/show'
   devise_for :users
   root to: "pages#home"
 
@@ -9,4 +11,6 @@ Rails.application.routes.draw do
   # Routes pour Mahé - ProfileController
  resource :profile, only: [:show, :edit, :update]
   get 'who_you_are', to: 'profiles#edit', as: :who_you_are
+  resources :recipes, only: [:index, :show]
+
 end
