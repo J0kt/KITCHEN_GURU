@@ -1,0 +1,8 @@
+<h1>Toutes les recettes</h1>
+
+<% @recipes.each do |recipe| %>
+  <div class="recipe-card">
+    <h2><%= link_to recipe.title, recipe_path(recipe) %></h2>
+    <p><%= truncate(recipe.description, length: 100) %></p>
+  </div>
+<% end %>
