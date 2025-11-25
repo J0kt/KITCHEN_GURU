@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1>Who you are</h1>
+      <p class="text-muted">Build your profile</p>
+
+      <%= simple_form_for @profile, url: profile_path, method: :patch do |f| %>
+        <%= f.input :gender,
+                    collection: ['Male', 'Female', 'Other'],
+                    prompt: 'Select your gender',
+                    required: true %>
+
+        <%= f.input :age,
+                    placeholder: 'Enter your age',
+                    required: true %>
+
+        <%= f.input :activity_level,
+                    collection: ['Sedentary', 'Lightly active', 'Moderately active', 'Very active', 'Extra active'],
+                    prompt: 'Select your activity level',
+                    required: true %>
+
+        <%= f.button :submit, 'Save and continue', class: 'btn btn-primary w-100 mt-3' %>
+      <% end %>
+    </div>
+  </div>
+</div>
