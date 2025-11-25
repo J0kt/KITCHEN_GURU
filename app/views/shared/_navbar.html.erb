@@ -1,37 +1,69 @@
-<nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom py-2">
   <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
-      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
+
+    <!-- LOGO + APP NAME -->
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center gap-2" do %>
+      <%= image_tag "logo.png", alt: "Kitchen Guru Logo", width: 40, class: "rounded-circle shadow-sm" %>
+      <span class="fw-bold text-dark">KitchenGuru</span>
     <% end %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- MOBILE TOGGLER -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- NAVIGATION ITEMS -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav ms-auto">
+
         <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
-          </li>
+
+          <!-- MY RECIPES -->
           <li class="nav-item">
-            <%= link_to "Messages", "#", class: "nav-link" %>
+            <%= link_to "My Recipes", recipes_path, class: "nav-link fw-semibold text-dark" %>
           </li>
-          <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
-          </a>
+
+          <!-- MEAL PLANNER -->
+          <li class="nav-item">
+            <%= link_to "Meal Planner", meal_plans_generate_path, class: "nav-link fw-semibold text-dark" %>
+          </li>
+
+          <!-- DROPDOWN MENU -->
+          <li class="nav-item dropdown ms-2">
+            <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier",
+                            class: "avatar", alt: "Profile" %>
+            </a>
+
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Action", "#", class: "dropdown-item" %>
-              <%= link_to "Another action", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+              <%= link_to "Profile", "#", class: "dropdown-item disabled" %>
+              <%= link_to "Settings", "#", class: "dropdown-item disabled" %>
+              <div class="dropdown-divider"></div>
+              <%= link_to "Log out",
+                          destroy_user_session_path,
+                          data: { turbo_method: :delete },
+                          class: "dropdown-item text-danger" %>
             </div>
           </li>
+
         <% else %>
+
+          <!-- LOGIN FOR NON LOGGED USER -->
           <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link fw-semibold text-dark" %>
           </li>
+
+          <!-- SIGNUP BUTTON -->
+          <li class="nav-item ms-2">
+            <%= link_to "Sign Up", new_user_registration_path,
+                        class: "btn btn-primary btn-sm px-3 py-1" %>
+          </li>
+
         <% end %>
+
       </ul>
     </div>
   </div>
