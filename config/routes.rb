@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'recipes/index'
   get 'recipes/show'
+  get "planner", to: "pages#planner"
   devise_for :users
   root to: "pages#home"
 
