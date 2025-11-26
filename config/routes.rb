@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   }
 
   # Home
-  root to: "pages#home"
+  root to: "home#index"
 
   # Profile (Mahé)
   resource :profile, only: [:show, :edit, :update]
