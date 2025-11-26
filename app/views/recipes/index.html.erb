@@ -3,13 +3,19 @@
   <!-- Title -->
   <div class="text-center mb-4">
     <h1 class="fw-bold">Your Recipes</h1>
-    <p class="text-muted">Manage all your saved and created recipes.</p>
+    <p class="text-muted">Manage all your saved and generated recipes.</p>
   </div>
 
   <!-- Buttons -->
   <div class="d-flex justify-content-center gap-3 mb-5">
-    <%= link_to "➕ New Recipe", new_recipe_path, class: "btn btn-primary px-4 py-2 rounded-pill" %>
-    <%= link_to "🧠 Meal Planner", meal_plans_generate_path, class: "btn btn-outline-secondary px-4 py-2 rounded-pill" %>
+    <!-- No real new_recipe_path yet, so we keep this as a disabled placeholder -->
+    <button class="btn btn-primary px-4 py-2 rounded-pill" disabled>
+      ➕ New Recipe (coming soon)
+    </button>
+
+    <%= link_to "🧠 Meal Planner",
+                meal_plans_generate_path,
+                class: "btn btn-outline-secondary px-4 py-2 rounded-pill" %>
   </div>
 
   <!-- Recipes list -->
@@ -22,17 +28,33 @@
               <h5 class="fw-bold"><%= recipe.title %></h5>
               <p class="text-muted small"><%= truncate(recipe.description, length: 80) %></p>
 
-              <p class="small text-secondary mt-2 mb-1">⏱ Prep: <%= recipe.prep_time %> min</p>
-              <p class="small text-secondary mb-3">🔥 Cook: <%= recipe.cook_time %> min</p>
+              <p class="small text-secondary mt-2 mb-1">
+                ⏱ Prep: <%= recipe.prep_time %> min
+              </p>
+              <p class="small text-secondary mb-3">
+                🔥 Cook: <%= recipe.cook_time %> min
+              </p>
 
-              <%= link_to "View", recipe_path(recipe), class: "btn btn-outline-primary rounded-pill mt-auto" %>
+              <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
+                <%= link_to "View",
+                            recipe_path(recipe),
+                            class: "btn btn-outline-primary rounded-pill btn-sm" %>
+
+                <%= button_to "Delete",
+                              recipe_path(recipe),
+                              method: :delete,
+                              data: { confirm: "Remove this recipe from your cookbook?" },
+                              class: "btn btn-outline-danger rounded-pill btn-sm" %>
+              </div>
             </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-muted text-center">No recipes yet. Try creating one!</p>
+    <p class="text-muted text-center">
+      No recipes yet. Once you generate and save a recipe, it will appear here.
+    </p>
   <% end %>
 
 </div>
