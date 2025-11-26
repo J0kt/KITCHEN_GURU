@@ -10,16 +10,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-<body>
-  <%= link_to "Skip to main content", "#main-content", class: "visually-hidden-focusable" %>
-  <header>
-    <%= render "shared/navbar" %>
-  </header>
+  <body class="bg-white">
+    <%= link_to "Skip to main content", "#main-content", class: "visually-hidden-focusable" %>
 
-  <main id="main-content">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
-  </main>
-</body>
+    <header class="border-bottom bg-white">
+      <%= render "shared/navbar" %>
+    </header>
+
+    <main id="main-content" class="py-4">
+      <div class="container">
+
+        <% if notice %>
+          <div class="alert alert-primary border-0 rounded-3 shadow-sm py-2 px-3 mb-3 small">
+            <%= notice %>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div class="alert alert-danger border-0 rounded-3 shadow-sm py-2 px-3 mb-3 small">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </main>
+  </body>
 </html>
