@@ -1,18 +1,24 @@
 Rails.application.routes.draw do
-  get 'profiles/edit'
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
 
-  root "home#index"
+  # Home
+  root to: "home#index"
 
+  # Profile (Mahé)
   resource :profile, only: [:show, :edit, :update]
   get 'who_you_are', to: 'profiles#edit', as: :who_you_are
 
+  # AI meal plan (old feature – kept for now so you don't break teammates' work)
   post 'meal_plans/generate', to: 'meal_plans#generate', as: :meal_plans_generate
 
-  resources :recipes, only: [:index, :show]
-  get 'recipes/index'
-  get 'recipes/show'
-  get "planner", to: "pages#planner"
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Recipes = cookbook
+  resources :recipes, only: [:index, :show, :destroy, :new, :create]
 
+  # Old planner page (if still used)
+  get "planner", to: "pages#planner"
+
+  # Health check
+  get "up" => "rails/health#show", as: :rails_health_check
 end

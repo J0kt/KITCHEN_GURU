@@ -1,0 +1,24 @@
+<div class="container py-5" style="max-width: 600px">
+
+  <!-- Title -->
+  <h1 class="fw-bold text-center mb-4">AI Recipe Generator</h1>
+  <p class="text-muted text-center mb-4">
+    Tell me what kind of recipe you want and I’ll generate it!
+  </p>
+
+  <%= form_with url: recipes_path, method: :post, local: true do |f| %>
+
+    <div class="mb-3">
+      <%= label_tag :prompt, "Describe what you want:", class: "form-label fw-semibold" %>
+      <%= text_area_tag :prompt, nil,
+            class: "form-control",
+            placeholder: "Example: vegan pasta with mushrooms",
+            rows: 4 %>
+    </div>
+
+    <%= submit_tag "Generate Recipe",
+          class: "btn btn-primary w-100 py-2 rounded-pill" %>
+
+  <% end %>
+
+</div>
