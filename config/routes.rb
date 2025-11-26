@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
   get 'profiles/edit'
-  devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
+  devise_for :users
 
-  root to: "pages#home"
+  root "home#index"
 
   resource :profile, only: [:show, :edit, :update]
   get 'who_you_are', to: 'profiles#edit', as: :who_you_are
