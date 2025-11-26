@@ -2,7 +2,9 @@
 # Nous faisons confiance à l'autoload de Rails pour trouver MenuGeneratorService.
 
 class MealPlansController < ApplicationController
-
+  
+  def show
+  end
   # Action pour générer le plan de repas (utilise le service API)
   def generate
     # 1. Nettoyer et autoriser les paramètres
