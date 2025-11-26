@@ -1,5 +1,70 @@
-<h1><%= @recipe.title %></h1>
+<div class="row justify-content-center">
+  <div class="col-lg-8">
 
-<p><%= @recipe.description %></p>
+    <!-- Recipe Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="h3 fw-bold"><%= @recipe.title %></h1>
 
-<%= link_to "Back to all recipes", recipes_path %>
+      <%= link_to "Back", recipes_path, class: "btn btn-sm btn-outline-secondary" %>
+    </div>
+
+    <!-- Info Card -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4">
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-4">
+            <p class="text-muted small mb-1">Prep Time</p>
+            <p class="fw-semibold"><%= @recipe.prep_time || "–" %> min</p>
+          </div>
+          <div class="col-4">
+            <p class="text-muted small mb-1">Cook Time</p>
+            <p class="fw-semibold"><%= @recipe.cook_time || "–" %> min</p>
+          </div>
+          <div class="col-4">
+            <p class="text-muted small mb-1">Servings</p>
+            <p class="fw-semibold"><%= @recipe.servings || "–" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <% if @recipe.description.present? %>
+      <div class="mb-4">
+        <h2 class="h5 fw-bold mb-2">Description</h2>
+        <p class="text-muted"><%= @recipe.description %></p>
+      </div>
+    <% end %>
+
+    <!-- Ingredients -->
+    <div class="mb-4">
+      <h2 class="h5 fw-bold mb-2">Ingredients</h2>
+
+      <% if @recipe.respond_to?(:ingredients) && @recipe.ingredients.present? %>
+        <ul class="list-group shadow-sm rounded-3">
+          <% @recipe.ingredients.each do |ingredient| %>
+            <li class="list-group-item"><%= ingredient %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted small fst-italic">No ingredients listed.</p>
+      <% end %>
+    </div>
+
+    <!-- Steps -->
+    <div class="mb-4">
+      <h2 class="h5 fw-bold mb-2">Steps</h2>
+
+      <% if @recipe.respond_to?(:steps) && @recipe.steps.present? %>
+        <ol class="ps-3">
+          <% @recipe.steps.each do |step| %>
+            <li class="mb-2"><%= step %></li>
+          <% end %>
+        </ol>
+      <% else %>
+        <p class="text-muted small fst-italic">No instructions available.</p>
+      <% end %>
+    </div>
+
+  </div>
+</div>
