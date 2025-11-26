@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   post 'meal_plans/generate', to: 'meal_plans#generate', as: :meal_plans_generate
 
   # Recipes = cookbook
-  resources :recipes, only: [:index, :show, :destroy, :new, :create]
+  # resources :recipes, only: [:index, :show, :destroy, :new, :create]
+  resources :recipes, only: [:index, :show, :destroy]
+
 
   # Old planner page (if still used)
   get "planner", to: "pages#planner"
