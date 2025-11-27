@@ -14,7 +14,7 @@
       <!-- Save / Reset buttons -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <% if @can_save_recipe %>
-          <%= button_to "Save last recipe",
+          <%= button_to "Save recipe",
                         assistant_save_path,
                         method: :post,
                         class: "btn btn-success btn-sm rounded-pill" %>

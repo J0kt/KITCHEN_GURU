@@ -1,3 +1,7 @@
+require "net/http"
+require "uri"
+require "json"
+
 class AssistantController < ApplicationController
   before_action :authenticate_user!
 
@@ -125,6 +129,38 @@ class AssistantController < ApplicationController
     recipe_attrs = build_recipe_from_ai(last_assistant_msg["content"])
     @recipe = current_user.recipes.new(recipe_attrs)
 
+    @recipe.title
+
+
+    uri = URI("https://api.openai.com/v1/images/generations")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE  # ⚠️ INSECURE – JUST FOR TESTING
+
+    req = Net::HTTP::Post.new(uri)
+    req["Content-Type"] = "application/json"
+    req["Authorization"] = "Bearer #{ENV['OPENAI_KEY']}"
+
+    req.body = {
+      model: "gpt-image-1",
+      n: 1,
+      quality: "low",
+      size: "1536x1024",
+      prompt: "High-quality food photography of: #{@recipe.title} #{@recipe.description} just show a picture of a the dish with no text "
+    }.to_json
+
+    res = http.request(req)
+
+
+    # Parse JSON
+    body = JSON.parse(res.body)
+
+    # Get the base64 string
+    b64_data = body.dig("data", 0, "b64_json")
+
+    @recipe.image_data = b64_data
+
     if @recipe.save
       redirect_to recipe_path(@recipe), notice: "Recipe saved to your cookbook."
     else
@@ -146,6 +182,13 @@ class AssistantController < ApplicationController
     carbs      = text[/Carbs.*?:\s*(\d+)/i, 1]
     fats       = text[/Fats?.*?:\s*(\d+)/i, 1]
     fiber      = text[/Fiber.*?:\s*(\d+)/i, 1]
+
+    text = text.sub("Macros (approx per serving):", "")
+    text = text.sub("Calories: #{calories} kcal", "")
+    text = text.sub("Protein: #{proteins} g", "")
+    text = text.sub("Carbs: #{carbs} g", "")
+    text = text.sub("Fats: #{fats} g", "")
+    text = text.sub("Fiber: #{fiber} g", "")
 
     {
       title:       title,

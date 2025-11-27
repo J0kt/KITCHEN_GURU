@@ -20,15 +20,25 @@
 
       <h1 class="display-6 fw-bold mb-4"><%= @recipe.title %></h1>
 
-      <div class="bg-light d-flex justify-content-center align-items-center rounded-3 mb-4" style="height: 250px; border: 2px dashed #ccc;">
-        <p class="text-muted">Image Placeholder</p>
+      <div class="rounded-3 mb-4" style="border: 2px dashed #ccc;">
+
+        <% if @recipe.image_data.present? %>
+        <%= image_tag(
+              "data:image/png;base64,#{@recipe.image_data}",
+              alt: @recipe.title,
+              class: "img-fluid",
+      style: "max-height: 100%; max-width: 100%; object-fit: contain;"
+            ) %>
+      <% end %>
+
       </div>
+
 
       <div class="mb-4">
         <p class="mb-1"><strong>Serves:</strong> <%= @recipe.servings || 1 %> <%= (@recipe.servings || 1) > 1 ? "(with leftovers)" : "" %></p>
         <p class="mb-1"><strong>Preparation Time:</strong> <%= @recipe.prep_time || 0 %> minutes</p>
         <p class="mb-1"><strong>Cook Time:</strong> <%= @recipe.cook_time || 0 %> minutes</p>
-        <p class="mb-1"><strong>Diet:</strong> <%= @recipe.is_vegan? ? "Vegan" : (@recipe.is_vegetarian? ? "Vegetarian" : "None specified") %></p>
+        <p class="mb-1"><strong>Diet:</strong> <%= @recipe.is_vegan? ? "Vegan" : (@recipe.is_vegetarian? ? "Vegetarian" : "Vegetarien") %></p>
       </div>
 
       <hr class="mb-4">
