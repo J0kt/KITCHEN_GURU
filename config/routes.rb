@@ -5,12 +5,10 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
-  # Chatbot
   get  "assistant",        to: "assistant#show",  as: :assistant
   post "assistant/talk",   to: "assistant#talk",  as: :assistant_talk
   post "assistant/reset",  to: "assistant#reset", as: :reset_chat
 
-  # Profile (Mahé)
   resource :profile, only: [:show, :edit, :update]
   get 'who_you_are', to: 'profiles#edit', as: :who_you_are
 
