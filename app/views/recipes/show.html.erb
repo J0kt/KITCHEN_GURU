@@ -1,51 +1,93 @@
 <div class="container py-5" style="max-width: 720px;">
 
-  <!-- Back + delete actions -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="mb-4">
     <%= link_to "← Back to my recipes",
                 recipes_path,
                 class: "btn btn-outline-secondary btn-sm rounded-pill" %>
-
-    <%= button_to "Delete this recipe",
-                  recipe_path(@recipe),
-                  method: :delete,
-                  data: { confirm: "Remove this recipe from your cookbook?" },
-                  class: "btn btn-outline-danger btn-sm rounded-pill" %>
   </div>
 
-  <!-- Recipe card -->
-  <div class="card shadow-sm border-0 rounded-4">
-    <div class="card-body p-4">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body p-5">
 
-      <h1 class="h3 fw-bold mb-2"><%= @recipe.title %></h1>
-      <p class="text-muted mb-4"><%= @recipe.description %></p>
-
-      <div class="d-flex gap-4 mb-4">
-        <div class="small text-secondary">
-          ⏱ <span class="fw-semibold"><%= @recipe.prep_time %> min</span>
-          <span class="ms-1">prep</span>
-        </div>
-        <div class="small text-secondary">
-          🔥 <span class="fw-semibold"><%= @recipe.cook_time %> min</span>
-          <span class="ms-1">cook</span>
-        </div>
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h2 class="h5 text-uppercase fw-light text-muted m-0"><%= @recipe.category.present? ? @recipe.category.humanize : "Recipe" %></h2>
+        <%= button_to "Delete",
+                      recipe_path(@recipe),
+                      method: :delete,
+                      data: { confirm: "Remove this recipe from your cookbook?" },
+                      class: "btn btn-outline-danger btn-sm rounded-pill" %>
       </div>
 
-      <hr>
+      <h1 class="display-6 fw-bold mb-4"><%= @recipe.title %></h1>
 
-      <!-- Placeholder sections you can enrich later -->
-      <div class="mb-3">
-        <h2 class="h6 fw-semibold mb-2">Ingredients</h2>
-        <p class="text-muted small mb-0">
-          Coming soon – we’ll display structured ingredients here.
-        </p>
+      <div class="bg-light d-flex justify-content-center align-items-center rounded-3 mb-4" style="height: 250px; border: 2px dashed #ccc;">
+        <p class="text-muted">Image Placeholder</p>
       </div>
 
+      <div class="mb-4">
+        <p class="mb-1"><strong>Serves:</strong> <%= @recipe.servings || 1 %> <%= (@recipe.servings || 1) > 1 ? "(with leftovers)" : "" %></p>
+        <p class="mb-1"><strong>Preparation Time:</strong> <%= @recipe.prep_time || 0 %> minutes</p>
+        <p class="mb-1"><strong>Cook Time:</strong> <%= @recipe.cook_time || 0 %> minutes</p>
+        <p class="mb-1"><strong>Diet:</strong> <%= @recipe.is_vegan? ? "Vegan" : (@recipe.is_vegetarian? ? "Vegetarian" : "None specified") %></p>
+      </div>
+
+      <hr class="mb-4">
+
+      <%
+        recipe_macros = @recipe.macros_summary
+        macro_labels = { calories: "ENERGY (kcal)", proteins: "PROTEIN (g)", fiber: "FIBER (g)", fats: "FAT (g)" }
+        dummy_targets = { calories: 500, proteins: 30, fiber: 15, fats: 25 }
+      %>
+      <h2 class="h5 fw-bold mb-3 text-secondary text-uppercase">Daily Nutrition Targets (per serving)</h2>
+      <div class="mb-4">
+        <% macro_labels.each do |key, label| %>
+          <% current_value = recipe_macros[key] || 0 %>
+          <% target_value = dummy_targets[key] %>
+          <% percentage = [(current_value.to_f / target_value.to_f) * 100, 100].min %>
+          <div class="mb-2">
+            <p class="small fw-semibold text-uppercase mb-1"><%= label %></p>
+            <div class="progress" style="height: 12px;">
+              <div class="progress-bar bg-info" role="progressbar" style="width: <%= percentage %>%;" aria-valuenow="<%= current_value %>" aria-valuemin="0" aria-valuemax="<%= target_value %>"></div>
+            </div>
+            <span class="small text-muted"><%= current_value.round(0) %> / <%= target_value.round(0) %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <hr class="mb-4">
+
+      <%
+        ingredients_text = @recipe.description.split("Ingredients:")[1].to_s.split("Steps:")[0].to_s.strip
+        ingredients_list = ingredients_text.split("\n").map(&:strip).reject(&:empty?)
+      %>
+      <div class="p-4 bg-light rounded-3 mb-4 border border-info border-3 border-opacity-25">
+        <h2 class="h5 fw-bold mb-3 text-secondary text-uppercase">Ingredients</h2>
+        <ul class="list-unstyled">
+          <% if ingredients_list.any? %>
+            <% ingredients_list.each do |ingredient| %>
+              <li>• <%= ingredient %></li>
+            <% end %>
+          <% else %>
+            <li>No ingredients listed.</li>
+          <% end %>
+        </ul>
+      </div>
+
+      <%
+        steps_text = @recipe.description.split("Steps:")[1].to_s.strip
+        steps_list = steps_text.split("\n").map(&:strip).reject(&:empty?)
+      %>
       <div>
-        <h2 class="h6 fw-semibold mb-2">Steps</h2>
-        <p class="text-muted small mb-0">
-          Coming soon – we’ll show step-by-step instructions here.
-        </p>
+        <h2 class="h5 fw-bold mb-3 text-secondary text-uppercase">Method</h2>
+        <ol class="list-unstyled">
+          <% if steps_list.any? %>
+            <% steps_list.each_with_index do |step, index| %>
+              <li class="mb-2"><strong><%= index + 1 %>.</strong> <%= step %></li>
+            <% end %>
+          <% else %>
+            <li>No steps listed.</li>
+          <% end %>
+        </ol>
       </div>
 
     </div>
