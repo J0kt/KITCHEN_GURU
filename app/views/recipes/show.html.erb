@@ -81,8 +81,8 @@
         <h2 class="h5 fw-bold mb-3 text-secondary text-uppercase">Method</h2>
         <ol class="list-unstyled">
           <% if steps_list.any? %>
-            <% steps_list.each_with_index do |step, index| %>
-              <li class="mb-2"><strong><%= index + 1 %>.</strong> <%= step %></li>
+            <% steps_list.each do |step| %>
+              <li class="mb-2"> <%= step %></li>
             <% end %>
           <% else %>
             <li>No steps listed.</li>

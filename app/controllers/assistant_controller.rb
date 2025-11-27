@@ -4,6 +4,10 @@ class AssistantController < ApplicationController
   def show
     session[:assistant_messages] ||= []
     @messages = session[:assistant_messages]
+
+    # We only show "Save recipe" if the last message comes from the assistant
+    last_msg = @messages.last
+    @can_save_recipe = last_msg.present? && last_msg["role"] == "assistant"
   end
 
   def talk
@@ -19,7 +23,7 @@ class AssistantController < ApplicationController
     # 2. Add the new user message into our history
     history << { "role" => "user", "content" => user_message }
 
-    # 3. System prompt (same spirit as before, just reused here)
+    # 3. System prompt
     system_prompt = <<~PROMPT
       You are KitchenGuru, an AI Chef and Nutritionist specialized in gut-health
       and anti-inflammatory cooking, inspired by ZOE Health principles.
@@ -50,18 +54,18 @@ class AssistantController < ApplicationController
       Prep time (minutes):
       Cook time (minutes):
       Ingredients:
-      - item 1
-      - item 2
+       item 1
+       item 2
       Steps:
-      1.
-      2.
-      3.
+
+
+
       Macros (approx per serving):
-      - Calories:
-      - Protein (g):
-      - Carbs (g):
-      - Fats (g):
-      - Fiber (g):
+       Calories:
+       Protein (g):
+       Carbs (g):
+       Fats (g):
+       Fiber (g):
 
       Macros must be simple but realistic estimates.
     PROMPT
@@ -83,7 +87,7 @@ class AssistantController < ApplicationController
       If appropriate, give a full recipe using the RECIPE FORMAT.
     FULL
 
-    # 5. Call RubyLLM with a single string (avoids the messages[] error)
+    # 5. Call RubyLLM with a single string
     chat = RubyLLM.chat
     response = chat.ask(full_prompt)
 
@@ -107,5 +111,53 @@ class AssistantController < ApplicationController
   def reset
     session[:assistant_messages] = []
     redirect_to assistant_path, notice: "Chat reset."
+  end
+
+  # NEW ACTION: save last AI recipe as a Recipe record
+  def save
+    history = session[:assistant_messages] || []
+    last_assistant_msg = history.reverse.find { |m| m["role"] == "assistant" }
+
+    if last_assistant_msg.blank?
+      redirect_to assistant_path, alert: "There is no AI recipe to save yet." and return
+    end
+
+    recipe_attrs = build_recipe_from_ai(last_assistant_msg["content"])
+    @recipe = current_user.recipes.new(recipe_attrs)
+
+    if @recipe.save
+      redirect_to recipe_path(@recipe), notice: "Recipe saved to your cookbook."
+    else
+      Rails.logger.error("Recipe save failed: #{@recipe.errors.full_messages.join(', ')}")
+      redirect_to assistant_path, alert: "Could not save this recipe."
+    end
+  end
+
+  private
+
+  # Very simple parser based on the format we asked the AI to use
+  def build_recipe_from_ai(text)
+    title      = text[/^Title:\s*(.+)$/i, 1] || "KitchenGuru recipe"
+    prep_min   = text[/^Prep time.*?:\s*(\d+)/i, 1]
+    cook_min   = text[/^Cook time.*?:\s*(\d+)/i, 1]
+
+    calories   = text[/Calories:\s*(\d+)/i, 1]
+    proteins   = text[/Protein.*?:\s*(\d+)/i, 1]
+    carbs      = text[/Carbs.*?:\s*(\d+)/i, 1]
+    fats       = text[/Fats?.*?:\s*(\d+)/i, 1]
+    fiber      = text[/Fiber.*?:\s*(\d+)/i, 1]
+
+    {
+      title:       title,
+      description: text,                      # full text used by your show view
+      prep_time:   prep_min.to_i > 0 ? prep_min.to_i : nil,
+      cook_time:   cook_min.to_i > 0 ? cook_min.to_i : nil,
+      calories:    calories.present? ? calories.to_i : nil,
+      proteins:    proteins.present? ? proteins.to_i : nil,
+      carbs:       carbs.present? ? carbs.to_i : nil,
+      fats:        fats.present? ? fats.to_i : nil,
+      fiber:       fiber.present? ? fiber.to_i : nil,
+      servings:    2                           # simple default
+    }
   end
 end
