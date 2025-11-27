@@ -1,0 +1,69 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+
+      <!-- Header -->
+      <div class="mb-3 text-center">
+          <span class="badge px-4 py-2 rounded-pill"
+          style="background:#2a2a2a; color:#fff; font-weight:700; font-size:1.15rem;">
+      🍳 KitchenGuru Assistant
+          </span>
+
+      </div>
+
+      <!-- Reset chat button -->
+      <div class="d-flex justify-content-end mb-3">
+        <%= button_to "Reset chat",
+                      reset_chat_path,
+                      method: :post,
+                      class: "btn btn-outline-danger btn-sm" %>
+      </div>
+
+      <!-- Flash messages -->
+      <% if notice %>
+        <div class="alert alert-success py-2"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-warning py-2"><%= alert %></div>
+      <% end %>
+
+      <!-- Chat window -->
+      <div class="border rounded-3 p-3 mb-3 bg-dark" style="max-height: 420px; overflow-y: auto;">
+        <% if @messages.blank? %>
+          <div class="mb-2 p-2 rounded-3 bg-secondary text-light">
+            👋 Hi, I’m KitchenGuru. Start by telling me what you want to cook,
+            your dietary preferences, and any ingredients to include or exclude.
+          </div>
+        <% else %>
+          <% @messages.each do |message| %>
+            <% if message["role"] == "user" %>
+              <div class="d-flex justify-content-end mb-2">
+                <div class="p-2 rounded-3 bg-primary text-white" style="max-width: 75%;">
+                  <%= simple_format(message["content"]) %>
+                </div>
+              </div>
+            <% else %>
+              <div class="d-flex justify-content-start mb-2">
+                <div class="p-2 rounded-3 bg-secondary text-light" style="max-width: 75%;">
+                  <%= simple_format(message["content"]) %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <!-- Input form -->
+      <%= form_with url: assistant_talk_path, method: :post, data: { turbo: false }, class: "d-flex gap-2" do %>
+        <%= text_area_tag :message, nil,
+              rows: 2,
+              placeholder: "Ex: I want an easy veggie dinner with tomatoes and no cheese…",
+              class: "form-control" %>
+        <button type="submit" class="btn btn-primary">
+          Send
+        </button>
+      <% end %>
+
+    </div>
+  </div>
+</div>
