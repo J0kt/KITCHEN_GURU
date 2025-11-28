@@ -66,10 +66,12 @@
 
       <hr class="mb-4">
 
-      <%
-        ingredients_text = @recipe.description.split("Ingredients:")[1].to_s.split("Steps:")[0].to_s.strip
-        ingredients_list = ingredients_text.split("\n").map(&:strip).reject(&:empty?)
-      %>
+        <%
+          ingredients_text = @recipe.description.split("Ingredients:")[1].to_s.split("Steps:")[0].to_s.strip
+          ingredients_list = ingredients_text.split("\n")
+                                            .map { |line| line.gsub(/^\s*[-•]\s*/, '').strip }
+                                            .reject(&:empty?)
+        %>
       <div class="p-4 bg-light rounded-3 mb-4 border border-info border-3 border-opacity-25">
         <h2 class="h5 fw-bold mb-3 text-secondary text-uppercase">Ingredients</h2>
         <ul class="list-unstyled">
