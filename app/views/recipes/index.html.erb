@@ -38,9 +38,10 @@
 
               <!-- BUTTONS -->
               <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
+                <!-- CHANGED CLASS: Now using btn-primary to match "New Recipe" -->
                 <%= link_to "View",
                             recipe_path(recipe),
-                            class: "btn btn-outline-primary rounded-pill btn-sm" %>
+                            class: "btn btn-primary rounded-pill btn-sm" %>
 
                 <%= button_to "Delete",
                               recipe_path(recipe),

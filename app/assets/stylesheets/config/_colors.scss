@@ -1,10 +1,20 @@
 // Define variables for your color scheme
 
-// For example:
-$red: #FD1015;
+// New Color Palette based on the image:
+$sage:       #84994F; // Primary green
+$yellow:     #FFE797; // Light background/accent
+$orange:     #FCB53B; // Accent/Info color
+$maroon:     #A72703; // Red/Danger color
+
+// Map to Bootstrap's standard names for consistent use:
+$red:        $maroon;
+$green:      $sage;
+$info:       $orange; // Use orange as the info/secondary accent color
+$primary:    $sage; // Primary button color
+
+// Base colors
+$dark:       #333333; // General text color (was $gray)
+$light-gray: #F4F4F4; // For body background
+
+// Keeping a blue for standard link defaults if needed, but not actively used
 $blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;

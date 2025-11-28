@@ -7,22 +7,21 @@
 // General style
 $font-family-sans-serif: $body-font;
 $headings-font-family:   $headers-font;
-$body-bg:                $light-gray;
+$body-bg:                $light-gray; // Background color
 $font-size-base:         1rem;
 
-// Colors
-$body-color: $gray;
-$primary:    $blue;
-$success:    $green;
-$info:       $yellow;
-$danger:     $red;
-$warning:    $orange;
+// Colors - Mapping our custom palette to Bootstrap utility classes
+$body-color: $dark;
+$primary:    $sage;     // Green (#84994F) -> primary button/links
+$success:    $sage;     // Green (#84994F) -> success alerts
+$info:       $orange;   // Orange (#FCB53B) -> info accents
+$danger:     $maroon;   // Maroon (#A72703) -> danger/delete actions
+$warning:    $yellow;   // Yellow (#FFE797) -> warnings
+$light:      $yellow;   // Lighter shade for light backgrounds
 
-// Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
-
-// Override other variables below!
+// Buttons & inputs' radius (Keeping the previous rounded-style configuration)
+$border-radius-sm:            .25rem;
+$border-radius:               .5rem;
+$border-radius-lg:            1rem;
+$border-radius-xl:            1.5rem;
+$border-radius-xxl:           2rem;
