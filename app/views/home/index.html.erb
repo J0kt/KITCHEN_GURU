@@ -3,7 +3,6 @@
 
     <div class="d-flex align-items-center justify-content-center mb-4">
 
-      <!-- REPLACED IMAGE LOGO WITH CUSTOM EMOJI/RED BACKGROUND DIV -->
       <div class="logo-emoji shadow me-3">
         🧑🏽‍🍳
       </div>
@@ -22,7 +21,6 @@
       Stop googling 'healthy recipes' at 7pm. Kitchen Guru creates custom meal plans tailored to your nutritional goals—just tell us what you're craving.
     </p>
 
-    <!-- Feature Icons - Using new Bootstrap color mapping: danger=Maroon, info=Orange, primary=Sage -->
     <div class="d-flex justify-content-around mb-5">
       <div class="text-center">
         <i class="fas fa-fire fa-2x text-danger mb-2"></i>
@@ -38,10 +36,7 @@
       </div>
     </div>
 
-    <!-- Call to Action Button: Linked to /recipes and using the new $primary color -->
-    <%= link_to "Let's cook!", recipes_path, class: "btn btn-primary btn-lg py-3 rounded-pill fw-bold border-2" %>
+    <%= link_to "Let's cook!", recipes_path, class: "btn btn-primary btn-lg py-3 rounded-pill fw-bold border-2 d-inline-block" %>
 
   </div>
 </div>
-
-
