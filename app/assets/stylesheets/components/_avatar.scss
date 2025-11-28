@@ -18,3 +18,16 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   border: white 1px solid;
 }
+
+// NEW STYLE: Custom Kitchen Guru Logo (Red background with Chef emoji)
+.logo-emoji {
+  width: 50px; /* Slightly larger size for main logo */
+  height: 50px;
+  border-radius: 50%;
+  background-color: $danger; /* Uses the maroon color from _colors.scss */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px; /* Size of the emoji */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

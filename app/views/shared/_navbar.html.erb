@@ -1,10 +1,16 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom py-2">
+<nav class="navbar navbar-expand-sm border-bottom py-2 fixed-top bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
 
     <!-- LOGO + APP NAME -->
     <%= link_to root_path, class: "navbar-brand d-flex align-items-center gap-2" do %>
-      <%= image_tag "logo.png", alt: "Kitchen Guru Logo", width: 40, class: "rounded-circle shadow-sm" %>
-      <span class="fw-bold text-dark">KitchenGuru</span>
+
+      <!-- REPLACED IMAGE LOGO WITH CUSTOM EMOJI/RED BACKGROUND DIV -->
+      <div class="logo-emoji me-1" style="width: 35px; height: 35px; font-size: 18px;">
+        🧑🏽‍🍳
+      </div>
+
+      <!-- Applying Alegreya font via inline style -->
+      <span class="fw-bold text-white" style="font-family: 'Alegreya', 'serif';">KitchenGuru</span>
     <% end %>
 
     <!-- MOBILE TOGGLER -->
@@ -22,20 +28,18 @@
 
           <!-- MY RECIPES -->
           <li class="nav-item">
-            <%= link_to "My Recipes", recipes_path, class: "nav-link fw-semibold text-dark" %>
+            <%= link_to "My Recipes", recipes_path, class: "nav-link fw-semibold text-white" %>
           </li>
 
-          <!-- DROPDOWN MENU -->
+          <!-- DROPDOWN MENU (Now with Profile Emoji) -->
           <li class="nav-item dropdown ms-2">
-            <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">
-              <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier",
-                            class: "avatar", alt: "Profile" %>
+            <a href="#" class="nav-link p-0" id="navbarDropdown" data-bs-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" style="font-size: 28px; line-height: 1;">
+              👨🏽‍🍳
             </a>
 
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Profile", "#", class: "dropdown-item disabled" %>
-              <%= link_to "Settings", "#", class: "dropdown-item disabled" %>
+              <%= link_to "Profile", "#", class: "dropdown-item disabled text-dark" %>
               <div class="dropdown-divider"></div>
               <%= link_to "Log out",
                           destroy_user_session_path,
@@ -48,13 +52,13 @@
 
           <!-- LOGIN FOR NON LOGGED USER -->
           <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link fw-semibold text-dark" %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link fw-semibold text-white" %>
           </li>
 
           <!-- SIGNUP BUTTON -->
           <li class="nav-item ms-2">
             <%= link_to "Sign Up", new_user_registration_path,
-                        class: "btn btn-primary btn-sm px-3 py-1" %>
+                        class: "btn btn-outline-white btn-sm px-3 py-1" %>
           </li>
 
         <% end %>

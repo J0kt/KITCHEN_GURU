@@ -6,7 +6,7 @@
   </div>
 
   <div class="d-flex justify-content-center gap-3 mb-5">
-    <%= link_to "➕ New Recipe", "http://localhost:3000/assistant", class: "btn btn-primary px-4 py-2 rounded-pill" %>
+    <%= link_to "➕ New Recipe", assistant_path, class: "btn btn-primary px-4 py-2 rounded-pill" %>
   </div>
 
   <% if @recipes.any? %>
@@ -26,9 +26,10 @@
               </p>
 
               <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
+                <!-- CHANGED CLASS: Now using btn-primary to match "New Recipe" -->
                 <%= link_to "View",
                             recipe_path(recipe),
-                            class: "btn btn-outline-primary rounded-pill btn-sm" %>
+                            class: "btn btn-primary rounded-pill btn-sm" %>
 
                 <%= button_to "Delete",
                               recipe_path(recipe),
