@@ -6,7 +6,7 @@
   </div>
 
   <div class="d-flex justify-content-center gap-3 mb-5">
-    <%= link_to "➕ New Recipe", "http://localhost:3000/assistant", class: "btn btn-primary px-4 py-2 rounded-pill" %>
+    <%= link_to "➕ New Recipe", assistant_path, class: "btn btn-primary px-4 py-2 rounded-pill" %>
   </div>
 
   <% if @recipes.any? %>
@@ -15,9 +15,20 @@
         <div class="col-md-4">
           <div class="card shadow-sm border-0 rounded-4 h-100">
             <div class="card-body d-flex flex-column">
-              <h5 class="fw-bold"><%= recipe.title %></h5>
-              <p class="text-muted small"><%= truncate(recipe.description, length: 80) %></p>
 
+              <!-- TITLE -->
+              <h5 class="fw-bold"><%= recipe.title %></h5>
+
+              <!-- NUTRITION SUMMARY -->
+              <p class="text-muted small mb-3">
+                Energy: <%= recipe.calories || 0 %> kcal |
+                Protein: <%= recipe.proteins || 0 %>g |
+                Fiber: <%= recipe.fiber || 0 %>g |
+                Carbs: <%= recipe.carbs || 0 %>g |
+                Fats: <%= recipe.fats || 0 %>g
+              </p>
+
+              <!-- TIMES -->
               <p class="small text-secondary mt-2 mb-1">
                 ⏱ Prep: <%= recipe.prep_time %> min
               </p>
@@ -25,6 +36,7 @@
                 🔥 Cook: <%= recipe.cook_time %> min
               </p>
 
+              <!-- BUTTONS -->
               <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
                 <%= link_to "View",
                             recipe_path(recipe),
@@ -36,6 +48,7 @@
                               data: { confirm: "Remove this recipe from your cookbook?" },
                               class: "btn btn-outline-danger rounded-pill btn-sm" %>
               </div>
+
             </div>
           </div>
         </div>

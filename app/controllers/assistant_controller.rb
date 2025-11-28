@@ -172,35 +172,77 @@ class AssistantController < ApplicationController
   private
 
   # Very simple parser based on the format we asked the AI to use
-  def build_recipe_from_ai(text)
-    title      = text[/^Title:\s*(.+)$/i, 1] || "KitchenGuru recipe"
-    prep_min   = text[/^Prep time.*?:\s*(\d+)/i, 1]
-    cook_min   = text[/^Cook time.*?:\s*(\d+)/i, 1]
+  # def build_recipe_from_ai(text)
+  #   title      = text[/^Title:\s*(.+)$/i, 1] || "KitchenGuru recipe"
+  #   prep_min   = text[/^Prep time.*?:\s*(\d+)/i, 1]
+  #   cook_min   = text[/^Cook time.*?:\s*(\d+)/i, 1]
 
-    calories   = text[/Calories:\s*(\d+)/i, 1]
-    proteins   = text[/Protein.*?:\s*(\d+)/i, 1]
-    carbs      = text[/Carbs.*?:\s*(\d+)/i, 1]
-    fats       = text[/Fats?.*?:\s*(\d+)/i, 1]
-    fiber      = text[/Fiber.*?:\s*(\d+)/i, 1]
+  #   calories   = text[/Calories:\s*(\d+)/i, 1]
+  #   proteins   = text[/Protein.*?:\s*(\d+)/i, 1]
+  #   carbs      = text[/Carbs.*?:\s*(\d+)/i, 1]
+  #   fats       = text[/Fats?.*?:\s*(\d+)/i, 1]
+  #   fiber      = text[/Fiber.*?:\s*(\d+)/i, 1]
 
-    text = text.sub("Macros (approx per serving):", "")
-    text = text.sub("Calories: #{calories} kcal", "")
-    text = text.sub("Protein: #{proteins} g", "")
-    text = text.sub("Carbs: #{carbs} g", "")
-    text = text.sub("Fats: #{fats} g", "")
-    text = text.sub("Fiber: #{fiber} g", "")
+  #   text = text.sub("Macros (approx per serving):", "")
+  #   text = text.sub("Calories: #{calories} kcal", "")
+  #   text = text.sub("Protein: #{proteins} g", "")
+  #   text = text.sub("Carbs: #{carbs} g", "")
+  #   text = text.sub("Fats: #{fats} g", "")
+  #   text = text.sub("Fiber: #{fiber} g", "")
 
-    {
-      title:       title,
-      description: text,                      # full text used by your show view
-      prep_time:   prep_min.to_i > 0 ? prep_min.to_i : nil,
-      cook_time:   cook_min.to_i > 0 ? cook_min.to_i : nil,
-      calories:    calories.present? ? calories.to_i : nil,
-      proteins:    proteins.present? ? proteins.to_i : nil,
-      carbs:       carbs.present? ? carbs.to_i : nil,
-      fats:        fats.present? ? fats.to_i : nil,
-      fiber:       fiber.present? ? fiber.to_i : nil,
-      servings:    2                           # simple default
-    }
-  end
+  #   {
+  #     title:       title,
+  #     description: text,                      # full text used by your show view
+  #     prep_time:   prep_min.to_i > 0 ? prep_min.to_i : nil,
+  #     cook_time:   cook_min.to_i > 0 ? cook_min.to_i : nil,
+  #     calories:    calories.present? ? calories.to_i : nil,
+  #     proteins:    proteins.present? ? proteins.to_i : nil,
+  #     carbs:       carbs.present? ? carbs.to_i : nil,
+  #     fats:        fats.present? ? fats.to_i : nil,
+  #     fiber:       fiber.present? ? fiber.to_i : nil,
+  #     servings:    2                           # simple default
+  #   }
+  # end
+    def build_recipe_from_ai(raw_text)
+      # 1. Normalise text: remove markdown and fix newlines
+      text = raw_text.to_s.gsub("\r\n", "\n")
+      # remove bold markers like **Title:** -> Title:
+      text = text.gsub("**", "")
+
+      # 2. Extract main fields from the AI answer
+      # We tolerate optional leading spaces and both "Carbs" and "Carbohydrates"
+      title    = text[/^\s*Title:\s*(.+)$/i, 1] || "KitchenGuru recipe"
+      prep_min = text[/^\s*Prep time.*?:\s*(\d+)/i, 1]
+      cook_min = text[/^\s*Cook time.*?:\s*(\d+)/i, 1]
+
+      calories = text[/^\s*Calories:\s*([\d\.]+)/i, 1]
+      proteins = text[/^\s*Protein.*?:\s*([\d\.]+)/i, 1]
+      # Handle both "Carbs" and "Carbohydrates"
+      carbs    = text[/^\s*(Carbs?|Carbohydrates).*?:\s*([\d\.]+)/i, 2]
+      fats     = text[/^\s*Fats?.*?:\s*([\d\.]+)/i, 1]
+      fiber    = text[/^\s*Fiber.*?:\s*([\d\.]+)/i, 1]
+
+      # 3. Clean description: remove the macros block from the bottom
+      description_text = text.dup
+      description_text.gsub!(/^\s*Macros.*$/i, "")
+      description_text.gsub!(/^\s*Calories:.*$/i, "")
+      description_text.gsub!(/^\s*Protein.*$/i, "")
+      description_text.gsub!(/^\s*(Carbs?|Carbohydrates).*$/i, "")
+      description_text.gsub!(/^\s*Fats?.*$/i, "")
+      description_text.gsub!(/^\s*Fiber.*$/i, "")
+
+      # 4. Build the attributes used by Recipe
+      {
+        title:       title,
+        description: description_text.strip,   # your show view uses this
+        prep_time:   prep_min&.to_i,
+        cook_time:   cook_min&.to_i,
+        calories:    calories&.to_i,
+        proteins:    proteins&.to_i,
+        carbs:       carbs&.to_i,
+        fats:        fats&.to_i,
+        fiber:       fiber&.to_i,
+        servings:    2                         # simple default
+      }
+    end
 end
