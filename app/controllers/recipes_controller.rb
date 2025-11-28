@@ -2,7 +2,7 @@ class RecipesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @recipes = current_user.recipes
+    @recipes = current_user.recipes.order(created_at: :desc)
   end
 
   def show
